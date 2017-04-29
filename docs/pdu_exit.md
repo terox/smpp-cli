@@ -1,0 +1,28 @@
+```javascript
+PDU {
+  '5120': <Buffer 32 31 34 30 34>,
+  command_length: 245,
+  command_id: 5,
+  command_status: 0,
+  sequence_number: 1,
+  command: 'deliver_sm',
+  service_type: '',
+  source_addr_ton: 1,
+  source_addr_npi: 1,
+  source_addr: '34000000000',
+  dest_addr_ton: 0,
+  dest_addr_npi: 0,
+  destination_addr: 'test',
+  esm_class: 4,
+  protocol_id: 0,
+  priority_flag: 0,
+  schedule_delivery_time: '',
+  validity_period: '',
+  registered_delivery: 0,
+  replace_if_present_flag: 0,
+  data_coding: 0,
+  sm_default_msg_id: 0,
+  short_message: { message: 'id:4.146480.5902450b297740.30564603.1279195757 sub:001 dlvrd:001 submit date:1704271922 done date:1704271934 stat:DELIVRD err:000 text:' },
+  receipted_message_id: '4.146480.5902450b297740.30564603.1279195757',
+  message_state: 2 }
+``
