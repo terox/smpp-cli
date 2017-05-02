@@ -1,6 +1,6 @@
 {
   "name": "smpp-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simplifies the way to handle SMS to SMPP server",
   "main": "./lib/index.js",
   "bin": {
