@@ -55,7 +55,7 @@ program
       .then(function(smpp) {
 
         if(false === program.dlrCallback) {
-          return null;
+          return log(chalk.blue("DLRs are not requested to SMPP"));
         }
 
         smpp.onDeliveryReport(function(dlr) {
