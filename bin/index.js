@@ -70,7 +70,7 @@ program
             );
 
             // Execute the callback
-            exec(program.dlrCallback + ' ' + dlr.toJson(), function(err, stdout, stderr) {
+            exec(options.dlrCallback + " '" + dlr.toJson() + "'", function(err, stdout, stderr) {
                 if(err) {
                   return log(chalk.bgRed('Something went wrong executing the DRL callback'));
                 }
