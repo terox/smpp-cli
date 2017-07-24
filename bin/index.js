@@ -72,7 +72,7 @@ program
             // Execute the callback
             exec(program.dlrCallback + ' ' + dlr.toJson(), function(err, stdout, stderr) {
                 if(err) {
-                  return log(chalk.rgRed('Something went wrong executing the DRL callback'));
+                  return log(chalk.bgRed('Something went wrong executing the DRL callback'));
                 }
 
                 log(chalk.green('Executed callback successfully'));
