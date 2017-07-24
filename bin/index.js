@@ -54,34 +54,36 @@ program
       // Listen the DLRs
       .then(function(smpp) {
 
-        if(false !== program.dlrCallback) {
+        if(false === program.dlrCallback) {
+          return null;
+        }
 
-          smpp.onDeliveryReport(function(dlr) {
+        smpp.onDeliveryReport(function(dlr) {
 
-            log(
-              chalk.green(
-                'Received DLR',
-                chalk.yellow(
-                  'Stat:', chalk.blue(dlr.getStat()),
-                  'Submit:', chalk.blue(moment(dlr.getSubmitDate()).format('YY-MM-DD HH:mm')),
-                  'Done:', chalk.blue(moment(dlr.getDoneDate()).format('YY-MM-DD HH:mm'))
-                )
+          log(
+            chalk.green(
+              'Received DLR',
+              chalk.yellow(
+                'Stat:', chalk.blue(dlr.getStat()),
+                'Submit:', chalk.blue(moment(dlr.getSubmitDate()).format('YY-MM-DD HH:mm')),
+                'Done:', chalk.blue(moment(dlr.getDoneDate()).format('YY-MM-DD HH:mm'))
               )
-            );
+            )
+          );
 
-            // Execute the callback
-            exec(options.dlrCallback + " '" + dlr.toJson() + "'", function(err, stdout, stderr) {
-                if(err) {
-                  return log(chalk.bgRed('Something went wrong executing the DRL callback'));
-                }
+          // Execute the callback
+          exec(options.dlrCallback + " '" + dlr.toJson() + "'", function(err, stdout, stderr) {
+              if(err) {
+                return log(chalk.bgRed('Something went wrong executing the DRL callback'));
+              }
 
-                log(chalk.green('Executed callback successfully'));
-            });
+              log(chalk.green('Executed callback successfully'));
           });
 
-          log(chalk.bgMagenta('Started DLRs listener'));
-          log(chalk.bgMagenta('Waiting for delivery reports...'));
-        }
+        });
+
+        log(chalk.bgMagenta('Started DLRs listener'));
+        log(chalk.bgMagenta('Waiting for delivery reports...'));
 
       });
 
