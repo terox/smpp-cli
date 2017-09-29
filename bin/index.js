@@ -31,61 +31,61 @@ program
       dlrCallback: options.dlrCallback
     })
 
-      // Open DNode server
-      .then(function(smpp) {
-        dnode({
-          send: function(payload, callback) {
+    // Open DNode server
+    .then(function(smpp) {
+      dnode({
+        send: function(payload, callback) {
 
-            log(chalk.blue('Sending SMS from "' + payload.sourceAddress +  '" to "' + payload.destinationAddress + '"'));
+          log(chalk.blue('Sending SMS from "' + payload.sourceAddress +  '" to "' + payload.destinationAddress + '"'));
 
-            smpp.sendSMS(payload.sourceAddress, payload.destinationAddress, payload.message).then(function(messageId) {
-              callback(messageId);
-              log(chalk.green('Sent successfully: ', pdu.message_id));
-            });
-
-          }
-        }).listen(port);
-
-        log(chalk.bgMagenta('Started DNode server at', port));
-        log(chalk.bgMagenta('Waiting for SMS...'));
-        return smpp;
-      })
-
-      // Listen the DLRs
-      .then(function(smpp) {
-
-        if(false === program.dlrCallback) {
-          return log(chalk.blue("DLRs are not requested to SMPP"));
-        }
-
-        smpp.onDeliveryReport(function(dlr) {
-
-          log(
-            chalk.green(
-              'Received DLR',
-              chalk.yellow(
-                'Stat:', chalk.blue(dlr.getStat()),
-                'Submit:', chalk.blue(moment(dlr.getSubmitDate()).format('YY-MM-DD HH:mm')),
-                'Done:', chalk.blue(moment(dlr.getDoneDate()).format('YY-MM-DD HH:mm'))
-              )
-            )
-          );
-
-          // Execute the callback
-          exec(options.dlrCallback + " '" + dlr.toJson() + "'", function(err, stdout, stderr) {
-              if(err) {
-                return log(chalk.bgRed('Something went wrong executing the DRL callback'));
-              }
-
-              log(chalk.green('Executed callback successfully'));
+          smpp.sendSMS(payload.sourceAddress, payload.destinationAddress, payload.message).then(function(messageId) {
+            callback(messageId);
+            log(chalk.green('Sent successfully: ', pdu.message_id));
           });
 
+        }
+      }).listen(port);
+
+      log(chalk.bgMagenta('Started DNode server at', port));
+      log(chalk.bgMagenta('Waiting for SMS...'));
+      return smpp;
+    })
+
+    // Listen the DLRs
+    .then(function(smpp) {
+
+      if(false === program.dlrCallback) {
+        return log(chalk.blue("DLRs are not requested to SMPP"));
+      }
+
+      smpp.onDeliveryReport(function(dlr) {
+
+        log(
+          chalk.green(
+            'Received DLR',
+            chalk.yellow(
+              'Stat:', chalk.blue(dlr.getStat()),
+              'Submit:', chalk.blue(moment(dlr.getSubmitDate()).format('YY-MM-DD HH:mm')),
+              'Done:', chalk.blue(moment(dlr.getDoneDate()).format('YY-MM-DD HH:mm'))
+            )
+          )
+        );
+
+        // Execute the callback
+        exec(options.dlrCallback + " '" + dlr.toJson() + "'", function(err, stdout, stderr) {
+            if(err) {
+              return log(chalk.bgRed('Something went wrong executing the DRL callback'));
+            }
+
+            log(chalk.green('Executed callback successfully'));
         });
 
-        log(chalk.bgMagenta('Started DLRs listener'));
-        log(chalk.bgMagenta('Waiting for delivery reports...'));
+      });
 
-      })
+      log(chalk.bgMagenta('Started DLRs listener'));
+      log(chalk.bgMagenta('Waiting for delivery reports...'));
+
+    })
 
     .catch(function(err) {
         log(chalk.red('Something went wrong: ', err));
