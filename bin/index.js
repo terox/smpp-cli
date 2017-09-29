@@ -85,7 +85,12 @@ program
         log(chalk.bgMagenta('Started DLRs listener'));
         log(chalk.bgMagenta('Waiting for delivery reports...'));
 
-      });
+      })
+
+    .catch(function(err) {
+        log(chalk.red('Something went wrong: ', err));
+        process.exit(1);
+    });
 
   });
 
